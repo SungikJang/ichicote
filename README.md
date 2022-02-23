@@ -1,1 +1,1 @@
-# why dont you get the fuck out of here?
+# My Python Study to be nice programmer
