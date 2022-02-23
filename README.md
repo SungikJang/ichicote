@@ -1,1 +1,1 @@
-# My Python Study to be nice programmer
+# My Python Study to be good programmer
