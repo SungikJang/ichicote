@@ -71,12 +71,32 @@ class SinglyLinkedList:
         self.size += 1
 
     # 2. 제일 앞에 삽입
-    def push_front(self):
-        pass
+    def push_front(self, data):
+        new_node = SinglyNode(data)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            iterator = self.head
+            self.head = new_node
+            self.head.next = iterator
+        self.size += 1
 
     # 3. 중간에 삽입
-    def push_after(self):
-        pass
+    def push_after(self, index, data):
+        new_node = SinglyNode(data)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            iterator = self.head
+            i = 0
+            while i < index - 1:
+                iterator = iterator.next
+                i += 1
+            new_node.next = iterator.next
+            iterator.next = new_node
+        self.size += 1
 
     # 삭제
     # 1. 제일 마지막을 삭제

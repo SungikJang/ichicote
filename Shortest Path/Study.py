@@ -63,6 +63,7 @@ for i in d[1:]:
         print("INFINITY")
     else:
         print(i, end=' ')
+# distance들을 저장할때 priorityqueue를 사용하면 훨씬 간단할듯
 
 
 # 다익스트라 알고리즘
@@ -161,3 +162,72 @@ for i in range(1, N+1):
         print("INFINITY")
     else:
         print(distance[i])
+
+
+# 시간복잡도
+# E개의 원소를 우선순위 큐에 넣었다가 모두 빼는 연산과 매우유사하다
+# 따라서 최대 E개의 간선들을 힙에 넣었다가 빼는 것이므로 O(ELogE)이다
+# 중복 간선을 포함하지 않는 다면 V^2(V 노드의 개수)보다 E는 항상작다
+# 따라서 O(LogE)는 O(LogV^2)보다 작다 이때 O(LogV^2)는  O(2LogV)이고 이는 O(LogV)이다
+# 그렇기에 다익스트라의 시간복잡도는 O(ELogV)라고 볼 수 있다
+
+
+
+# 플로이드 워셜 알고리즘
+# 모든 지점에서 다른 모든 지점까지의 최단경로를 구하는 경우
+# 모든 노드에 대하야 다른노드로의 최단거리 정보를 담아야 하기때문에 2차원 리스트를 처리해야한다
+# 2차원 리스트로 처리해야 하므로 N번의 단계마다 O(N^2)의 시간이 소요된다
+# 따라서 시간복잡도는 O(N^3)이다
+# 다이나믹 프로그래밍이라는 특징을 가지고 있음
+
+# 점화식 D(a,b) = min(D(a,b), D(a,k)+D(k,b))
+
+# 혼자 해보기
+graph = [
+    [],
+    [0, 0, 4,INF,6],
+    [0, 3,0,7,INF],
+    [0, 5,INF,0,4],
+    [0, INF,INF,2,0]
+]
+
+def FWA(graph):
+    for k in range(1, len(graph[1])):
+        for i in range(1, len(graph[1])):
+            if i is not k:
+                for l in range(1, len(graph[1])):
+                    if l is not k and graph[i][l] != 0:
+                        graph[i][l] = min(graph[i][l], graph[i][k] + graph[k][l])
+FWA(graph)
+print(graph)
+
+# 생각한거 보다 간단하게 짜진거같다
+# 책의 아이디어와 동일하다 하지만 나는 for문을 돌때 안쪽 두개의 for문에서 거쳐 가는 노드를 고려하지 않기 위해 조건문을
+# 사용하였지만 책에서는 사용 하지않고 그대로 했다. 어차피 조건문이 없어도 어차피 그값들이 모드 0이기에 값이 절대
+# 갱신되지 않는다. 이럴땐 그냥 코드가 간단해지도록 하는게 좋을것 같다
+
+N = int(input())
+M = int(input())
+graph = [[INF]*(N+1) for _ in range(N+1)]
+print(graph)
+for i in range(1,N+1):
+    for l in range(1, N+1):
+        if i==l:
+            graph[i][l] = 0
+
+for _ in range(M):
+    a,b,c = map(int, input().split())
+    graph[a][b] = c
+
+for k in range(1, N+1):
+    for a in range(1, N+1):
+        for b in range(1, N+1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
+
+for a in range(1,N+1):
+    for b in range(1,N+1):
+        if graph[a][b] == INF:
+            print("INFINITY")
+        else:
+            print(graph[a][b], end=' ')
+
